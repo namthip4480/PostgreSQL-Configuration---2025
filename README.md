@@ -110,9 +110,10 @@ docker exec -it -u postgres postgres-config pg_ctl restart -D /var/lib/postgresq
 
 ### ผลการทดลอง
 ```
+```
 <img width="219" height="99" alt="image" src="https://github.com/user-attachments/assets/baaada37-86f0-43f8-8ad4-31a80063eee7" />
 
-
+```
 ```
 
 #### 2.2 ปรับแต่ง Work Memory (ไม่ต้อง restart)
@@ -135,8 +136,9 @@ WHERE name = 'work_mem';
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="355" height="132" alt="image" src="https://github.com/user-attachments/assets/bee781f6-2fbb-45d2-9006-ced0d46db99c" />
-
+```
 ```
 
 #### 3.3 ปรับแต่ง Maintenance Work Memory
@@ -153,8 +155,9 @@ SHOW maintenance_work_mem;
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="269" height="98" alt="image" src="https://github.com/user-attachments/assets/10ec938e-2ada-4aa8-88e8-197e551304bf" />
-
+```
 ```
 
 #### 3.4 ปรับแต่ง WAL Buffers
@@ -179,8 +182,9 @@ SHOW wal_buffers;
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="351" height="138" alt="image" src="https://github.com/user-attachments/assets/10256db8-efa5-4825-a5c4-3cab05f51abd" />
-
+```
 ```
 
 #### 3.5 ปรับแต่ง Effective Cache Size
@@ -197,8 +201,9 @@ SHOW effective_cache_size;
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="161" height="58" alt="image" src="https://github.com/user-attachments/assets/90d1e2dd-61e4-4919-b532-9140ac048796" />
-
+```
 ```
 
 ### Step 4: ตรวจสอบผล
@@ -227,8 +232,9 @@ ORDER BY name;
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="1072" height="170" alt="image" src="https://github.com/user-attachments/assets/1eb7ad95-a3b2-4dd5-adaa-10d3ff6372b4" />
-
+```
 ```
 
 ### Step 5: การสร้างและทดสอบ Workload
@@ -274,9 +280,9 @@ LIMIT 1000;
 ```
 1. คำสั่ง EXPLAIN(ANALYZE,BUFFERS) คืออะไร 
 คำสั่ง EXPLAIN (ANALYZE, BUFFERS) ช่วยให้รู้ว่า PostgreSQL ใช้เวลาในการประมวลผลคำสั่งอย่างไร และใช้ทรัพยากร (ทั้งเวลาและหน่วยความจำ) เท่าไหร่
-
+```
 <img width="835" height="347" alt="image" src="https://github.com/user-attachments/assets/90a84f2e-842d-43c4-b8d3-b889a39c8649" />
-
+```
 3. อธิบายผลลัพธ์ที่ได้
 คำสั่ง EXPLAIN (ANALYZE, BUFFERS) ช่วยให้เรารู้ว่า PostgreSQL ใช้เวลาในการประมวลผลคำสั่งอย่างไร และใช้ทรัพยากร (ทั้งเวลาและหน่วยความจำ) เท่าไหร่
 
@@ -293,8 +299,9 @@ LIMIT 100;
 
 ### ผลการทดลอง
 ```
+```
 <img width="837" height="284" alt="image" src="https://github.com/user-attachments/assets/83aed443-6cd5-4c42-956f-98ef6a15631c" />
-
+```
 2. อธิบายผลลัพธ์ที่ได้
 คำสั่ง EXPLAIN (ANALYZE, BUFFERS) ใช้เพื่อดูแผนการทำงานและการใช้ทรัพยากรของ PostgreSQL เมื่อรันคำสั่ง SQL. โดยแสดงผลรวมทั้งเวลาในการประมวลผลและการใช้หน่วยความจำ/ดิสก์.
 ผลลัพธ์:
@@ -320,8 +327,9 @@ VACUUM (ANALYZE, VERBOSE) large_table;
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="1039" height="608" alt="image" src="https://github.com/user-attachments/assets/928cf4b3-007a-48c3-bc6c-1981185b24e3" />
-
+```
 2. อธิบายผลลัพธ์ที่ได้
 CREATE INDEX CONCURRENTLY สร้างดัชนีที่ใช้หน่วยความจำ (maintenance_work_mem) ในการประมวลผลดัชนี แต่ไม่ทำให้ฐานข้อมูลหยุดทำงาน.
 
@@ -370,8 +378,9 @@ FROM get_memory_usage();
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="586" height="301" alt="image" src="https://github.com/user-attachments/assets/0a372bdf-cafd-437f-bf66-544d18e30ae7" />
-
+```
 ```
 
 #### 6.2 การติดตาม Buffer Hit Ratio
@@ -392,9 +401,13 @@ ORDER BY heap_blks_read + heap_blks_hit DESC;
 ```
 ### ผลการทดลอง
 ```
-1. รูปผลการทดลอง
-2. อธิบายผลลัพธ์ที่ได้
 ```
+<img width="640" height="301" alt="image" src="https://github.com/user-attachments/assets/39106368-1982-4843-aab2-38ee86c541ae" />
+
+```
+2. อธิบายผลลัพธ์ที่ได้
+คำสั่งนี้ใช้เพื่อ ตรวจสอบประสิทธิภาพการใช้หน่วยความจำ ของฐานข้อมูล PostgreSQL โดยการคำนวณ Buffer Hit Ratio คือการทำให้ เปอร์เซ็นต์ของบล็อกที่พบในหน่วยความจำ (hit ratio) สูงกว่า 95% เพื่อให้ระบบสามารถเข้าถึงข้อมูลได้เร็วที่สุด โดยไม่ต้องไปอ่านจากดิสก์บ่อยเกินไป
+
 #### 6.3 ดู Buffer Hit Ratio ทั้งระบบ
 ```sql
 SELECT datname,
@@ -406,8 +419,10 @@ WHERE datname = current_database();
 ```
 ### ผลการทดลอง
 ```
-<img width="659" height="349" alt="image" src="https://github.com/user-attachments/assets/3c9f3a43-fa84-4424-8fe3-3d6fb539ce9e" />
+```
+<img width="632" height="185" alt="image" src="https://github.com/user-attachments/assets/2eb0a2d7-5f96-45bd-8ad9-c347b5984a3d" />
 
+```
 2. อธิบายผลลัพธ์ที่ได้
 คำสั่งนี้ใช้เพื่อ ตรวจสอบประสิทธิภาพการใช้หน่วยความจำ ของฐานข้อมูล PostgreSQL โดยการคำนวณ Buffer Hit Ratio เป้าหมายคือการทำให้ เปอร์เซ็นต์ของบล็อกที่พบในหน่วยความจำ (hit ratio) สูงกว่า 95% เพื่อให้ระบบสามารถเข้าถึงข้อมูลได้เร็วที่สุด โดยไม่ต้องไปอ่านจากดิสก์บ่อยเกินไป
 ```
@@ -429,8 +444,9 @@ LIMIT 10;
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="647" height="204" alt="image" src="https://github.com/user-attachments/assets/b5aefc78-7cf1-435e-afa2-a258e12caa65" />
-
+```
 2. อธิบายผลลัพธ์ที่ได้
 คำสั่งนี้ช่วยให้เราตรวจสอบ Buffer Hit Ratio ของฐานข้อมูลที่ใช้งานอยู่ในตอนนั้น.
 ค่าที่ได้จะแสดงถึงการใช้ หน่วยความจำ (cache) ว่ามีประสิทธิภาพแค่ไหนในการตอบสนองการอ่านข้อมูล, ซึ่งควรจะสูงกว่า 95% เพื่อให้การเข้าถึงข้อมูลมีประสิทธิภาพที่สุด
@@ -447,8 +463,9 @@ ORDER BY name;
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="1073" height="426" alt="image" src="https://github.com/user-attachments/assets/398163c4-b47c-4e2d-8358-d9e5c3edb520" />
-
+```
 2. อธิบายค่าต่าง ๆ ที่มีความสำคัญ
 autovacuum: ค่านี้ใช้ในการเปิด/ปิดฟีเจอร์ autovacuum. ค่าที่แสดงเป็น on หมายถึงฟีเจอร์นี้เปิดใช้งานอยู่.
 
@@ -487,8 +504,9 @@ SELECT pg_reload_conf();
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="447" height="634" alt="image" src="https://github.com/user-attachments/assets/8e10a744-b747-45d0-a5ca-3e8f740f007f" />
-
+```
 ```
 
 ### Step 8: Performance Testing และ Benchmarking
@@ -563,8 +581,9 @@ ORDER BY test_timestamp DESC;
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="624" height="371" alt="image" src="https://github.com/user-attachments/assets/0b8de1c1-56a8-4cdc-a28e-f02a4991e2ab" />
-
+```
 2. อธิบายผลลัพธ์ที่ได้
 การใช้ SELECT ในฟังก์ชัน PL/pgSQL จะทำให้เกิดข้อผิดพลาด "query has no destination for result data" ถ้าหากคุณไม่เก็บผลลัพธ์จาก SELECT. ดังนั้นจึงต้องใช้ PERFORM แทน
 ```
@@ -602,8 +621,9 @@ SELECT * FROM memory_monitor;
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="577" height="170" alt="image" src="https://github.com/user-attachments/assets/75d80692-bb22-4d39-a810-83c7e50e6592" />
-
+```
 ```
 
 ### Step 10: การจำลอง Load Testing
@@ -652,10 +672,11 @@ CREATE INDEX idx_orders_date ON load_test_orders(order_date);
 ```
 ### ผลการทดลอง
 ```
+```
 <img width="513" height="567" alt="image" src="https://github.com/user-attachments/assets/324ad6d8-87f9-4b44-95af-571c66805368" />
 
 <img width="497" height="330" alt="image" src="https://github.com/user-attachments/assets/6c2e34a9-f585-4468-bcfa-356632f1d3e9" />
-
+```
 ```
 
 #### 10.2 การทดสอบ Query Performance
