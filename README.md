@@ -58,7 +58,9 @@ SHOW data_directory;
 ### บันทึกผลการทดลอง
 ```
 1. ตำแหน่งที่อยู่ของไฟล์ configuration อยู่ที่ตำแหน่งใด
+   ตอบ  /var/lib/postgresql/data/postgresql.conf
 2. ตำแหน่งที่อยู่ของไฟล์ data อยู่ที่ตำแหน่งใด
+   ตอบ var/lib/postgresql/data
 ```
 -- ตรวจสอบการตั้งค่าปัจจุบัน
 SELECT name, setting, unit, category, short_desc 
@@ -69,9 +71,9 @@ WHERE name IN (
 );
 ```
 ### บันทึกผลการทดลอง
-```
-บันทึกรูปผลของ configuration ทั้ง 6 ค่า 
-```
+
+<img width="1184" height="169" alt="image" src="https://github.com/user-attachments/assets/de7393dc-d790-4452-b760-abb675377743" />
+
 
 ### Step 2: การปรับแต่งพารามิเตอร์แบบค่อยเป็นค่อยไป
 
@@ -85,8 +87,12 @@ WHERE name = 'shared_buffers';
 ### ผลการทดลอง
 ```
 1.รูปผลการรันคำสั่ง
+<img width="514" height="121" alt="image" src="https://github.com/user-attachments/assets/3558a005-4a04-49c1-84b4-ebfb408612a6" />
+
 2. ค่า  shared_buffers มีการกำหนดค่าไว้เท่าไหร่ (ใช้ setting X unit)
-3. ค่า  pending_restart ในผลการทดลองมีค่าเป็นอย่างไร และมีความหมายอย่างไร
+   ตอบ setting 16384 * unit 8 kb เท่ากับ 98304
+4. ค่า  pending_restart ในผลการทดลองมีค่าเป็นอย่างไร และมีความหมายอย่างไร
+   ตอบ เป็นค่า f หมายถึง ไม่ต้องรีสตาร์ท ระบบใช้ค่าปัจจุบันได้เลย
 ```
 -- คำนวณและตั้งค่าใหม่
 -- สำหรับระบบ 2GB: 512MB (25%)
@@ -104,8 +110,8 @@ docker exec -it -u postgres postgres-config pg_ctl restart -D /var/lib/postgresq
 
 ### ผลการทดลอง
 ```
-รูปผลการเปลี่ยนแปลงค่า pending_restart
-รูปหลังจาก restart postgres
+<img width="219" height="99" alt="image" src="https://github.com/user-attachments/assets/baaada37-86f0-43f8-8ad4-31a80063eee7" />
+
 
 ```
 
@@ -129,7 +135,8 @@ WHERE name = 'work_mem';
 ```
 ### ผลการทดลอง
 ```
-รูปผลการเปลี่ยนแปลงค่า work_mem
+<img width="355" height="132" alt="image" src="https://github.com/user-attachments/assets/bee781f6-2fbb-45d2-9006-ced0d46db99c" />
+
 ```
 
 #### 3.3 ปรับแต่ง Maintenance Work Memory
@@ -146,7 +153,8 @@ SHOW maintenance_work_mem;
 ```
 ### ผลการทดลอง
 ```
-รูปผลการเปลี่ยนแปลงค่า maintenance_work_mem
+<img width="269" height="98" alt="image" src="https://github.com/user-attachments/assets/10ec938e-2ada-4aa8-88e8-197e551304bf" />
+
 ```
 
 #### 3.4 ปรับแต่ง WAL Buffers
