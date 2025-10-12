@@ -179,7 +179,8 @@ SHOW wal_buffers;
 ```
 ### ผลการทดลอง
 ```
-รูปผลการเปลี่ยนแปลงค่า wal_buffers
+<img width="351" height="138" alt="image" src="https://github.com/user-attachments/assets/10256db8-efa5-4825-a5c4-3cab05f51abd" />
+
 ```
 
 #### 3.5 ปรับแต่ง Effective Cache Size
@@ -196,7 +197,8 @@ SHOW effective_cache_size;
 ```
 ### ผลการทดลอง
 ```
-รูปผลการเปลี่ยนแปลงค่า effective_cache_size
+<img width="161" height="58" alt="image" src="https://github.com/user-attachments/assets/90d1e2dd-61e4-4919-b532-9140ac048796" />
+
 ```
 
 ### Step 4: ตรวจสอบผล
@@ -225,7 +227,8 @@ ORDER BY name;
 ```
 ### ผลการทดลอง
 ```
-รูปผลการลัพธ์การตั้งค่า
+<img width="1072" height="170" alt="image" src="https://github.com/user-attachments/assets/1eb7ad95-a3b2-4dd5-adaa-10d3ff6372b4" />
+
 ```
 
 ### Step 5: การสร้างและทดสอบ Workload
@@ -270,8 +273,13 @@ LIMIT 1000;
 ### ผลการทดลอง
 ```
 1. คำสั่ง EXPLAIN(ANALYZE,BUFFERS) คืออะไร 
-2. รูปผลการรัน
+คำสั่ง EXPLAIN (ANALYZE, BUFFERS) ช่วยให้รู้ว่า PostgreSQL ใช้เวลาในการประมวลผลคำสั่งอย่างไร และใช้ทรัพยากร (ทั้งเวลาและหน่วยความจำ) เท่าไหร่
+
+<img width="835" height="347" alt="image" src="https://github.com/user-attachments/assets/90a84f2e-842d-43c4-b8d3-b889a39c8649" />
+
 3. อธิบายผลลัพธ์ที่ได้
+คำสั่ง EXPLAIN (ANALYZE, BUFFERS) ช่วยให้เรารู้ว่า PostgreSQL ใช้เวลาในการประมวลผลคำสั่งอย่างไร และใช้ทรัพยากร (ทั้งเวลาและหน่วยความจำ) เท่าไหร่
+
 ```
 ```sql
 -- ทดสอบ Hash operation
@@ -285,9 +293,17 @@ LIMIT 100;
 
 ### ผลการทดลอง
 ```
-1. รูปผลการรัน
-2. อธิบายผลลัพธ์ที่ได้ 
+<img width="837" height="284" alt="image" src="https://github.com/user-attachments/assets/83aed443-6cd5-4c42-956f-98ef6a15631c" />
+
+2. อธิบายผลลัพธ์ที่ได้
+คำสั่ง EXPLAIN (ANALYZE, BUFFERS) ใช้เพื่อดูแผนการทำงานและการใช้ทรัพยากรของ PostgreSQL เมื่อรันคำสั่ง SQL. โดยแสดงผลรวมทั้งเวลาในการประมวลผลและการใช้หน่วยความจำ/ดิสก์.
+ผลลัพธ์:
+GroupAggregate: ใช้ในการคำนวณค่า COUNT(*) และทำการ GROUP BY ตามคอลัมน์ number.
+HashAggregate: ใช้เทคนิค Hash ในการคำนวณกลุ่มข้อมูลและนับจำนวนแถวในแต่ละกลุ่ม.
+Seq Scan: PostgreSQL สแกนข้อมูลทั้งหมดในตาราง large_table เนื่องจากไม่สามารถใช้ดัชนีได้ในการกรองข้อมูลหรือจัดกลุ่ม
+
 3. การสแกนเป็นแบบใด เกิดจากเหตุผลใด
+ใช้ Seq Scan เกิดจากการที่ไม่มีดัชนีที่สามารถใช้ได้ในการทำ GROUP BY.
 ```
 #### 5.3 การทดสอบ Maintenance Work Memory
 ```sql
@@ -304,8 +320,14 @@ VACUUM (ANALYZE, VERBOSE) large_table;
 ```
 ### ผลการทดลอง
 ```
-1. รูปผลการทดลอง จากคำสั่ง VACUUM (ANALYZE, VERBOSE) large_table;
+<img width="1039" height="608" alt="image" src="https://github.com/user-attachments/assets/928cf4b3-007a-48c3-bc6c-1981185b24e3" />
+
 2. อธิบายผลลัพธ์ที่ได้
+CREATE INDEX CONCURRENTLY สร้างดัชนีที่ใช้หน่วยความจำ (maintenance_work_mem) ในการประมวลผลดัชนี แต่ไม่ทำให้ฐานข้อมูลหยุดทำงาน.
+
+DELETE ลบแถวที่ตรงตามเงื่อนไขที่กำหนด.
+
+VACUUM จะเคลียร์พื้นที่ที่ไม่ได้ใช้แล้วจากการลบแถว (ทำให้ฐานข้อมูลไม่เก็บพื้นที่ที่ล้าสมัย) และทำการอัปเดตสถิติสำหรับการประมวลผลในอนาคต.
 ```
 ### Step 6: การติดตาม Memory Usage
 
@@ -348,7 +370,8 @@ FROM get_memory_usage();
 ```
 ### ผลการทดลอง
 ```
-รูปผลการทดลอง
+<img width="586" height="301" alt="image" src="https://github.com/user-attachments/assets/0a372bdf-cafd-437f-bf66-544d18e30ae7" />
+
 ```
 
 #### 6.2 การติดตาม Buffer Hit Ratio
@@ -383,8 +406,10 @@ WHERE datname = current_database();
 ```
 ### ผลการทดลอง
 ```
-1. รูปผลการทดลอง
+<img width="659" height="349" alt="image" src="https://github.com/user-attachments/assets/3c9f3a43-fa84-4424-8fe3-3d6fb539ce9e" />
+
 2. อธิบายผลลัพธ์ที่ได้
+คำสั่งนี้ใช้เพื่อ ตรวจสอบประสิทธิภาพการใช้หน่วยความจำ ของฐานข้อมูล PostgreSQL โดยการคำนวณ Buffer Hit Ratio เป้าหมายคือการทำให้ เปอร์เซ็นต์ของบล็อกที่พบในหน่วยความจำ (hit ratio) สูงกว่า 95% เพื่อให้ระบบสามารถเข้าถึงข้อมูลได้เร็วที่สุด โดยไม่ต้องไปอ่านจากดิสก์บ่อยเกินไป
 ```
 
 #### 6.4 ดู Table ที่มี Disk I/O มาก
@@ -404,8 +429,11 @@ LIMIT 10;
 ```
 ### ผลการทดลอง
 ```
-1. รูปผลการทดลอง
+<img width="647" height="204" alt="image" src="https://github.com/user-attachments/assets/b5aefc78-7cf1-435e-afa2-a258e12caa65" />
+
 2. อธิบายผลลัพธ์ที่ได้
+คำสั่งนี้ช่วยให้เราตรวจสอบ Buffer Hit Ratio ของฐานข้อมูลที่ใช้งานอยู่ในตอนนั้น.
+ค่าที่ได้จะแสดงถึงการใช้ หน่วยความจำ (cache) ว่ามีประสิทธิภาพแค่ไหนในการตอบสนองการอ่านข้อมูล, ซึ่งควรจะสูงกว่า 95% เพื่อให้การเข้าถึงข้อมูลมีประสิทธิภาพที่สุด
 ```
 ### Step 7: การปรับแต่ง Autovacuum
 
@@ -419,8 +447,18 @@ ORDER BY name;
 ```
 ### ผลการทดลอง
 ```
-1. รูปผลการทดลอง
+<img width="1073" height="426" alt="image" src="https://github.com/user-attachments/assets/398163c4-b47c-4e2d-8358-d9e5c3edb520" />
+
 2. อธิบายค่าต่าง ๆ ที่มีความสำคัญ
+autovacuum: ค่านี้ใช้ในการเปิด/ปิดฟีเจอร์ autovacuum. ค่าที่แสดงเป็น on หมายถึงฟีเจอร์นี้เปิดใช้งานอยู่.
+
+autovacuum_naptime: ระยะเวลารอระหว่างการรันแต่ละครั้งของ autovacuum. ค่าเริ่มต้นคือ 1min (1 นาที).
+
+autovacuum_max_workers: กำหนดจำนวนสูงสุดของกระบวนการ autovacuum ที่สามารถทำงานพร้อมกันได้. ค่าตั้งต้นคือ 3.
+
+autovacuum_vacuum_cost_delay: เวลาหน่วงระหว่างการดำเนินการ vacuum แต่ละหน่วย (ช่วยจำกัดการใช้งานทรัพยากร). ค่านี้ตั้งเป็น 20ms (20 มิลลิวินาที).
+
+autovacuum_vacuum_cost_limit: กำหนดขีดจำกัดในการใช้ทรัพยากรในการทำ vacuum. ค่า -1 หมายความว่าไม่มีการจำกัดทรัพยากรในการทำ vacuum
 ```
 
 #### 7.2 การปรับแต่ง Autovacuum สำหรับประสิทธิภาพ
@@ -449,7 +487,8 @@ SELECT pg_reload_conf();
 ```
 ### ผลการทดลอง
 ```
-รูปผลการทดลองการปรับแต่ง Autovacuum (Capture รวมทั้งหมด 1 รูป)
+<img width="447" height="634" alt="image" src="https://github.com/user-attachments/assets/8e10a744-b747-45d0-a5ca-3e8f740f007f" />
+
 ```
 
 ### Step 8: Performance Testing และ Benchmarking
@@ -524,8 +563,10 @@ ORDER BY test_timestamp DESC;
 ```
 ### ผลการทดลอง
 ```
-1. รูปผลการทดลอง
+<img width="624" height="371" alt="image" src="https://github.com/user-attachments/assets/0b8de1c1-56a8-4cdc-a28e-f02a4991e2ab" />
+
 2. อธิบายผลลัพธ์ที่ได้
+การใช้ SELECT ในฟังก์ชัน PL/pgSQL จะทำให้เกิดข้อผิดพลาด "query has no destination for result data" ถ้าหากคุณไม่เก็บผลลัพธ์จาก SELECT. ดังนั้นจึงต้องใช้ PERFORM แทน
 ```
 
 
@@ -561,7 +602,8 @@ SELECT * FROM memory_monitor;
 ```
 ### ผลการทดลอง
 ```
-รูปผลการทดลอง
+<img width="577" height="170" alt="image" src="https://github.com/user-attachments/assets/75d80692-bb22-4d39-a810-83c7e50e6592" />
+
 ```
 
 ### Step 10: การจำลอง Load Testing
@@ -610,7 +652,10 @@ CREATE INDEX idx_orders_date ON load_test_orders(order_date);
 ```
 ### ผลการทดลอง
 ```
-รูปผลการทดลอง การสร้าง FUNCTION และ INDEX
+<img width="513" height="567" alt="image" src="https://github.com/user-attachments/assets/324ad6d8-87f9-4b44-95af-571c66805368" />
+
+<img width="497" height="330" alt="image" src="https://github.com/user-attachments/assets/6c2e34a9-f585-4468-bcfa-356632f1d3e9" />
+
 ```
 
 #### 10.2 การทดสอบ Query Performance
@@ -787,14 +832,19 @@ SELECT * FROM simulate_oltp_workload(25);
 ```
 ### ผลการทดลอง
 ```
-รูปผลการทดลอง
+<img width="630" height="206" alt="image" src="https://github.com/user-attachments/assets/9eb60496-fad7-4bd2-a05a-9086f8095134" />
 ```
 -- ทดสอบปานกลาง  
 SELECT * FROM simulate_oltp_workload(100);
 ### ผลการทดลอง
 ```
-1. รูปผลการทดลอง
-2. อธิบายผลการทดลอง การ SELECT , INSERT, UPDATE, DELETE เป็นอย่างไร 
+<img width="621" height="242" alt="image" src="https://github.com/user-attachments/assets/9e88c2b3-f53b-4eb9-977c-5c9835152156" />
+
+2. อธิบายผลการทดลอง การ SELECT , INSERT, UPDATE, DELETE เป็นอย่างไร
+   SELECT คือผลกระทบหลักคือการใช้ memory และ disk I/O.
+   INSERT คือผลกระทบคือการใช้ transaction log และการอัปเดต index.
+   UPDATE คือผลกระทบอยู่ที่การใช้ lock และการอัปเดตข้อมูลในแถวหลายๆ แถว.
+   DELETE คือผลกระทบคล้ายกับ UPDATE โดยมีการลบแถวและอัปเดต index
 ```
 
 -- ทดสอบหนักขึ้น เครื่องใครไม่ไหวผ่านก่อน หรือเปลี่ยนค่า 500 เป็น 200 :)
@@ -996,7 +1046,8 @@ SELECT * FROM run_benchmark_suite();
 ```
 ### ผลการทดลอง
 ```
-รูปผลการทดลอง
+<img width="591" height="497" alt="image" src="https://github.com/user-attachments/assets/5941d334-4003-476a-8fd1-61defd7067b3" />
+
 ```
 
 -- ดูผลการทดสอบ
@@ -1013,7 +1064,8 @@ ORDER BY test_timestamp DESC;
 ```
 ### ผลการทดลอง
 ```
-รูปผลการทดลอง
+<img width="402" height="235" alt="image" src="https://github.com/user-attachments/assets/eb0a36d7-f903-46d6-a76b-56044da59fc1" />
+
 ```
 
 ### Step 12: การจัดการ Configuration แบบ Advanced
